@@ -1,4 +1,3 @@
-ts
 $app.onTorrentStreamSendStreamToMediaPlayer((event) => {
   // Stop Seanime from launching the native/external media player.
   event.preventDefault()
