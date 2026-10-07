@@ -1,7 +1,7 @@
 {
   "id": "torrent-web-player",
   "name": "Torrent Web Player",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "language": "typescript",
   "type": "plugin",
   "description": "Browser-first torrent streaming for Seanime.",
@@ -15,7 +15,14 @@
     "permissions": {
       "scopes": [
         "playback"
-      ]
+      ],
+      "allow": {
+        "networkAccess": {
+          "allowedDomains": [
+            "http://127.0.0.1:43211"
+          ]
+        }
+      }
     }
   }
 }
