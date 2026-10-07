@@ -7,6 +7,7 @@
   "description": "Adds a browser-first torrent playback action and attempts to route torrent streams through Seanime's integrated web player instead of the desktop media player.",
   "author": "Custom",
   "lang": "multi",
+  "manifestURI": "https://raw.githubusercontent.com/shiv121231/torrent-transcode-seanime/refs/heads/main/manifest.json",
   "payload": "",
   "payloadURI": "https://raw.githubusercontent.com/shiv121231/torrent-transcode-seanime/refs/heads/main/code.ts",
   "plugin": {
