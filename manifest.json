@@ -1,10 +1,10 @@
 {
   "id": "torrent-web-player",
   "name": "Torrent Web Player",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "language": "typescript",
   "type": "plugin",
-  "description": "Plays Seanime torrent streams directly in the Seanime web interface.",
+  "description": "Plays torrent streams in Seanime's built-in Web Player.",
   "author": "Shivansh",
   "lang": "multi",
   "manifestURI": "https://raw.githubusercontent.com/shiv121231/torrent-transcode-seanime/refs/heads/main/manifest.json",
