@@ -1,0 +1,18 @@
+{
+  "id": "torrent-web-player",
+  "name": "Torrent Web Player",
+  "version": "0.1.0",
+  "language": "typescript",
+  "type": "plugin",
+  "description": "Adds a browser-first torrent playback action and attempts to route torrent streams through Seanime's integrated web player instead of the desktop media player.",
+  "author": "Custom",
+  "lang": "multi",
+  "payload": "",
+  "payloadURI": "https://raw.githubusercontent.com/YOUR_USER/seanime-torrent-web-player/main/code.ts",
+  "plugin": {
+    "version": "1",
+    "permissions": {
+      "scopes": []
+    }
+  }
+}
