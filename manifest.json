@@ -8,7 +8,7 @@
   "author": "Custom",
   "lang": "multi",
   "payload": "",
-  "payloadURI": "https://raw.githubusercontent.com/YOUR_USER/seanime-torrent-web-player/main/code.ts",
+  "payloadURI": "https://raw.githubusercontent.com/shiv121231/torrent-transcode-seanime/refs/heads/main/code.ts",
   "plugin": {
     "version": "1",
     "permissions": {
