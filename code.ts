@@ -1,55 +1,49 @@
-/**
- * Torrent Web Player for Seanime 3.10.x
- *
- * Redirects Seanime torrent playback from the external desktop player
- * to the client-side native/Web player.
- *
- * The existing torrent selection is preserved.
- */
-
 $ui.register((ctx) => {
-  const startNativePlayer = async () => {
-    const previous = ctx.torrentstream?.getPreviousStreamOptions?.()
+  const startWebTorrent = async () => {
+    const previous = ctx.torrentstream.getPreviousStreamOptions()
 
     if (!previous) {
       throw new Error(
-        "Seanime did not expose the current torrent stream options.",
+        "No previous torrent stream was found. Select a torrent and episode first.",
       )
     }
 
-    const options = {
+    const clients = $app.getClientIds()
+
+    if (!clients || clients.length === 0) {
+      throw new Error("No connected Seanime clients were found.")
+    }
+
+    // Prefer the browser/web client that initiated this plugin.
+    const webClient = clients.find(
+      (id) => $app.getClientPlatform(id) === "web",
+    )
+
+    const clientId = previous.clientId || webClient || clients[0]
+
+    await ctx.torrentstream.startStream({
       ...previous,
-      playbackType: "nativeplayer" as const,
-    }
-
-    // Normally the original stream already contains the client ID.
-    // If it doesn't, select a connected web client.
-    if (!options.clientId) {
-      const clients = $app.getClientIds?.() ?? []
-
-      const webClient = clients.find(
-        (id) => $app.getClientPlatform?.(id) === "web",
-      )
-
-      options.clientId = webClient ?? clients[0]
-    }
-
-    if (!options.clientId) {
-      throw new Error("No connected Seanime web client was found.")
-    }
-
-    await ctx.torrentstream.startStream(options)
+      clientId,
+      playbackType: "nativeplayer",
+    })
   }
 
-  $app.onTorrentStreamSendStreamToMediaPlayer((event) => {
-    // Stop Seanime from launching VLC/IINA/the desktop player.
-    event.preventDefault()
+  ctx.toast.info(
+    "Torrent Web Player loaded. Select a torrent and use the plugin's Web Player action.",
+  )
 
-    void startNativePlayer().catch((error) => {
-      const message =
-        error instanceof Error ? error.message : String(error)
+  // Expose a small UI action rather than intercepting Seanime's
+  // external-player hook.
+  ctx.ui?.register?.({
+    id: "torrent-web-player",
+    label: "Play torrent in Web Player",
+    onClick: () => {
+      void startWebTorrent().catch((error) => {
+        const message =
+          error instanceof Error ? error.message : String(error)
 
-      ctx.toast.error(`Torrent Web Player: ${message}`)
-    })
+        ctx.toast.error(`Torrent Web Player: ${message}`)
+      })
+    },
   })
 })
