@@ -1,11 +1,11 @@
 {
   "id": "torrent-web-player",
   "name": "Torrent Web Player",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "language": "typescript",
   "type": "plugin",
-  "description": "Adds browser-based torrent playback through Seanime's web player.",
-  "author": "Custom",
+  "description": "Browser-first torrent streaming for Seanime.",
+  "author": "Shivansh",
   "lang": "multi",
   "manifestURI": "https://raw.githubusercontent.com/shiv121231/torrent-transcode-seanime/refs/heads/main/manifest.json",
   "payload": "",
@@ -13,14 +13,9 @@
   "plugin": {
     "version": "1",
     "permissions": {
-      "scopes": [],
-      "allow": {
-        "networkAccess": {
-          "allowedDomains": [
-            "127.0.0.1:43211"
-          ]
-        }
-      }
+      "scopes": [
+        "playback"
+      ]
     }
   }
 }
