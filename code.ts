@@ -1,6 +1,6 @@
 $ui.register((ctx) => {
   const action = ctx.action.newEpisodeGridItemMenuItem({
-    label: "Play torrent in Web Player",
+    label: "Play Torrent in Web Player",
     type: "torrentstream",
   })
 
@@ -18,36 +18,42 @@ $ui.register((ctx) => {
         ep?.number ??
         ep?.episode
 
+      const aniDbEpisode =
+        ep?.aniDBEpisode ??
+        ep?.anidbEpisode ??
+        String(episodeNumber)
+
       if (!mediaId || episodeNumber === undefined) {
+        ctx.toast.error("Could not determine anime/episode.")
+        return
+      }
+
+      if (!ctx.torrentstream) {
         ctx.toast.error(
-          "Could not determine the anime/episode for this torrent."
+          "Torrent streaming API unavailable. Make sure the plugin has the playback permission."
         )
         return
       }
 
-      const response = await ctx.fetch(
-        "http://127.0.0.1:43211/api/v1/torrentstream/start",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            mediaId: Number(mediaId),
-            episode: Number(episodeNumber),
-            playbackType: "mediastream",
-          }),
-        }
-      )
-
-      if (!response.ok) {
-        throw new Error(
-          `Torrent stream failed: ${response.status} ${response.statusText}`
-        )
+      if (!ctx.torrentstream.isEnabled()) {
+        ctx.toast.error("Seanime torrent streaming is disabled.")
+        return
       }
 
+      await ctx.torrentstream.startStream({
+        mediaId: Number(mediaId),
+        episodeNumber: Number(episodeNumber),
+        aniDbEpisode: String(aniDbEpisode),
+        autoSelect: true,
+
+        // "default" is the correct playback mode for the web client.
+        // nativeplayer is specifically for Seanime's desktop native player.
+        playbackType: "default",
+
+        clientId: "",
+      })
+
       ctx.toast.success("Torrent stream started.")
-      ctx.screen.reload()
     } catch (error) {
       const message =
         error instanceof Error ? error.message : String(error)
